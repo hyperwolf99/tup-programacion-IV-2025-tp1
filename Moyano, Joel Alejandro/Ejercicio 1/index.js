@@ -15,8 +15,10 @@ app.get('/', (req, res) => {
 
 // <----------------> OBTENER CÁLCULOS <---------------->
 app.get('/calculos', (req, res) => {
+    // Agregar el tipo a cada uno
+    const resultado = calculos.map(c => ({ ...c, tipo: c.base === c.altura ? 'cuadrado' : 'rectángulo' }))
     // Respuesta final
-    res.json({ success: true, data: calculos })
+    res.json({ success: true, data: resultado })
 })
 
 // <----------------> CREAR CÁLCULO <---------------->
@@ -69,9 +71,12 @@ app.get('/calculos/:id', (req, res) => {
         // Si no se encuentra el cálculo, se devuelve un error 404
         return res.status(404).json({ success: false, message: 'Cálculo no encontrado' })
     }
+    
+    // Agregar el tipo
+    const resultado = { ...calculo, tipo: calculo.base === calculo.altura ? 'cuadrado' : 'rectángulo' }
 
     // Si se encuentra el cálculo, se devuelve en la respuesta
-    res.json({ success: true, data: calculo })
+    res.json({ success: true, data: resultado })
 })
 
 // <----------------> ELIMINAR CÁLCULO <---------------->
